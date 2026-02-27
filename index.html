@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>S010 PROJECTS</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f5f7;
+      --bg-card: #ffffff;
+      --bg-nav: rgba(245,245,247,0.85);
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --text-tertiary: #aeaeb2;
+      --accent: #0071e3;
+      --accent-hover: #0064cc;
+      --border: rgba(0,0,0,0.08);
+      --shadow-sm: 0 2px 14px rgba(0,0,0,0.06);
+      --shadow-md: 0 10px 40px rgba(0,0,0,0.10);
+      --badge-bg: rgba(0,113,227,0.09);
+      --badge-text: #0071e3;
+      --toggle-bg: #e5e5ea;
+    }
+
+    [data-theme="dark"] {
+      --bg: #000000;
+      --bg-card: #1c1c1e;
+      --bg-nav: rgba(0,0,0,0.85);
+      --text-primary: #f5f5f7;
+      --text-secondary: #98989d;
+      --text-tertiary: #48484a;
+      --accent: #2997ff;
+      --accent-hover: #409cff;
+      --border: rgba(255,255,255,0.08);
+      --shadow-sm: 0 2px 14px rgba(0,0,0,0.5);
+      --shadow-md: 0 10px 40px rgba(0,0,0,0.6);
+      --badge-bg: rgba(41,151,255,0.14);
+      --badge-text: #2997ff;
+      --toggle-bg: #38383a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      transition: background .35s ease, color .35s ease;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg-nav);
+      backdrop-filter: saturate(180%) blur(24px);
+      -webkit-backdrop-filter: saturate(180%) blur(24px);
+      border-bottom: 1px solid var(--border);
+      transition: background .35s, border-color .35s;
+    }
+    .nav-inner {
+      max-width: 960px; margin: 0 auto;
+      padding: 0 24px; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-size: 1rem; font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); }
+
+    /* Toggle */
+    .theme-toggle {
+      width: 42px; height: 24px;
+      background: var(--toggle-bg);
+      border-radius: 50px; border: none;
+      cursor: pointer; position: relative;
+      transition: background .3s;
+    }
+    .theme-toggle::after {
+      content: '';
+      position: absolute; top: 3px; left: 3px;
+      width: 18px; height: 18px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 1px 4px rgba(0,0,0,.25);
+      transition: transform .3s cubic-bezier(.4,0,.2,1);
+    }
+    [data-theme="dark"] .theme-toggle::after { transform: translateX(18px); }
+
+    /* ─── HERO ─── */
+    .hero {
+      max-width: 960px; margin: 0 auto;
+      padding: 80px 24px 50px;
+      text-align: center;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 5px 14px; border-radius: 50px;
+      background: var(--badge-bg); color: var(--badge-text);
+      font-size: .75rem; font-weight: 600; letter-spacing: .3px;
+      margin-bottom: 24px;
+      animation: fadeUp .5s ease both;
+    }
+    .badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px var(--badge-bg);
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 5.5vw, 3.8rem);
+      font-weight: 700; letter-spacing: -1.2px; line-height: 1.08;
+      color: var(--text-primary);
+      margin-bottom: 18px;
+      animation: fadeUp .5s .06s ease both;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p {
+      font-size: 1.1rem; font-weight: 300;
+      color: var(--text-secondary); line-height: 1.7;
+      max-width: 480px; margin: 0 auto 52px;
+      animation: fadeUp .5s .12s ease both;
+    }
+
+    /* ─── SECTION ─── */
+    .section {
+      max-width: 960px; margin: 0 auto;
+      padding: 0 24px 90px;
+    }
+    .section-label {
+      font-size: .68rem; font-weight: 600;
+      color: var(--text-tertiary); letter-spacing: 1.4px;
+      text-transform: uppercase; margin-bottom: 18px;
+    }
+
+    /* ─── GRID ─── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+    }
+
+    /* ─── APP CARD ─── */
+    .card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 26px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      display: flex; flex-direction: column; gap: 18px;
+      transition: transform .25s cubic-bezier(.4,0,.2,1), box-shadow .25s, background .35s, border-color .35s;
+      will-change: transform;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+
+    .card-header { display: flex; align-items: center; gap: 14px; }
+
+    .app-icon {
+      width: 58px; height: 58px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.7rem; flex-shrink: 0;
+      box-shadow: 0 3px 12px rgba(0,0,0,.10);
+    }
+    .icon-a { background: linear-gradient(145deg,#e3ecff,#c0d4ff); }
+    .icon-b { background: linear-gradient(145deg,#f0e3ff,#d4c0ff); }
+    .icon-c { background: linear-gradient(145deg,#e3fff0,#c0ffd4); }
+    [data-theme="dark"] .icon-a { background: linear-gradient(145deg,#162040,#1e3060); }
+    [data-theme="dark"] .icon-b { background: linear-gradient(145deg,#20163a,#301e60); }
+    [data-theme="dark"] .icon-c { background: linear-gradient(145deg,#162030,#1e4035); }
+
+    .app-info { flex: 1; min-width: 0; }
+    .app-name { font-size: 1rem; font-weight: 600; letter-spacing: -.2px; color: var(--text-primary); margin-bottom: 2px; }
+    .app-cat  { font-size: .75rem; color: var(--text-tertiary); }
+    .app-ver  {
+      display: inline-block; margin-top: 5px;
+      font-size: .65rem; font-weight: 600;
+      padding: 2px 8px; border-radius: 50px;
+      background: var(--badge-bg); color: var(--badge-text);
+    }
+
+    .app-desc {
+      font-size: .85rem; color: var(--text-secondary);
+      line-height: 1.65; font-weight: 300;
+    }
+
+    .stats {
+      display: flex; gap: 0;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+    .stat { flex: 1; text-align: center; }
+    .stat + .stat { border-left: 1px solid var(--border); }
+    .stat-val { font-size: .9rem; font-weight: 600; color: var(--text-primary); }
+    .stat-key { font-size: .65rem; color: var(--text-tertiary); margin-top: 2px; }
+
+    /* ─── BUTTONS ─── */
+    .actions { display: flex; flex-direction: column; gap: 8px; }
+    .row { display: flex; gap: 8px; }
+    .row .btn { flex: 1; }
+
+    .btn {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      padding: 12px 18px; border-radius: 11px;
+      font-size: .85rem; font-weight: 500;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: all .18s ease;
+      position: relative; overflow: hidden;
+    }
+    .btn:active { transform: scale(.97); }
+
+    .btn-primary {
+      background: var(--accent); color: #fff;
+      box-shadow: 0 3px 14px rgba(0,113,227,.28);
+    }
+    .btn-primary:hover { background: var(--accent-hover); box-shadow: 0 4px 18px rgba(0,113,227,.38); }
+
+    .btn-ghost {
+      background: var(--badge-bg); color: var(--accent);
+    }
+    .btn-ghost:hover { opacity: .8; }
+
+    /* ─── INSTALL TIP ─── */
+    .tip-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex; align-items: flex-start; gap: 14px;
+      box-shadow: var(--shadow-sm);
+      margin-top: 14px;
+      transition: background .35s, border-color .35s;
+    }
+    .tip-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
+    .tip-text { font-size: .82rem; color: var(--text-secondary); line-height: 1.65; }
+    .tip-text strong { color: var(--text-primary); font-weight: 600; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 24px;
+      text-align: center;
+      transition: border-color .35s;
+    }
+    footer p { font-size: .76rem; color: var(--text-tertiary); line-height: 1.9; }
+    footer strong { color: var(--text-secondary); font-weight: 500; }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .card:nth-child(1) { animation: fadeUp .5s .18s ease both; }
+    .card:nth-child(2) { animation: fadeUp .5s .26s ease both; }
+    .card:nth-child(3) { animation: fadeUp .5s .34s ease both; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width:600px) {
+      .hero { padding-top: 50px; }
+      .hero h1 { font-size: 2rem; }
+      .grid { grid-template-columns: 1fr; }
+      .row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a class="logo" href="#"><span>S010</span>&nbsp;PROJECTS</a>
+      <button class="theme-toggle" id="themeBtn" aria-label="Тема"></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="badge"><span class="badge-dot"></span>APK · Прямая загрузка</div>
+    <h1>Приложения<br>от <em>S010</em></h1>
+    <p>Официальный источник наших приложений для Android. Скачивайте напрямую — всегда актуальная версия.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-label">Доступные приложения</div>
+    <div class="grid">
+
+      <!-- CARD 1 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="app-icon icon-a">⚡</div>
+          <div class="app-info">
+            <div class="app-name">App One</div>
+            <div class="app-cat">Продуктивность</div>
+            <span class="app-ver">v1.0.0</span>
+          </div>
+        </div>
+        <p class="app-desc">Краткое описание первого приложения — что оно делает и для кого предназначено.</p>
+        <div class="stats">
+          <div class="stat"><div class="stat-val">4.9 ★</div><div class="stat-key">Рейтинг</div></div>
+          <div class="stat"><div class="stat-val">24 МБ</div><div class="stat-key">Размер</div></div>
+          <div class="stat"><div class="stat-val">8.0+</div><div class="stat-key">Android</div></div>
+        </div>
+        <div class="actions">
+          <a href="#" class="btn btn-primary">↓&nbsp;&nbsp;Скачать APK</a>
+        </div>
+      </div>
+
+      <!-- CARD 2 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="app-icon icon-b">🎯</div>
+          <div class="app-info">
+            <div class="app-name">App Two</div>
+            <div class="app-cat">Утилиты</div>
+            <span class="app-ver">v2.1.3</span>
+          </div>
+        </div>
+        <p class="app-desc">Краткое описание второго приложения — что оно делает и для кого предназначено.</p>
+        <div class="stats">
+          <div class="stat"><div class="stat-val">4.7 ★</div><div class="stat-key">Рейтинг</div></div>
+          <div class="stat"><div class="stat-val">18 МБ</div><div class="stat-key">Размер</div></div>
+          <div class="stat"><div class="stat-val">9.0+</div><div class="stat-key">Android</div></div>
+        </div>
+        <div class="actions">
+          <div class="row">
+            <a href="#" class="btn btn-primary">↓&nbsp;&nbsp;Скачать</a>
+            <a href="#" class="btn btn-ghost">📋 Инструкция</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 3 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="app-icon icon-c">🌿</div>
+          <div class="app-info">
+            <div class="app-name">App Three</div>
+            <div class="app-cat">Lifestyle</div>
+            <span class="app-ver">v1.4.0</span>
+          </div>
+        </div>
+        <p class="app-desc">Краткое описание третьего приложения — что оно делает и для кого предназначено.</p>
+        <div class="stats">
+          <div class="stat"><div class="stat-val">4.8 ★</div><div class="stat-key">Рейтинг</div></div>
+          <div class="stat"><div class="stat-val">31 МБ</div><div class="stat-key">Размер</div></div>
+          <div class="stat"><div class="stat-val">10.0+</div><div class="stat-key">Android</div></div>
+        </div>
+        <div class="actions">
+          <a href="#" class="btn btn-primary">↓&nbsp;&nbsp;Скачать APK</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TIP -->
+    <div class="tip-box">
+      <span class="tip-icon">ℹ️</span>
+      <p class="tip-text">
+        <strong>Как установить APK?</strong><br>
+        Перейдите в <strong>Настройки → Безопасность</strong> и разрешите установку из неизвестных источников. После этого откройте скачанный файл и следуйте инструкциям.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>S010 PROJECTS</strong></p>
+    <p>© 2025 S010 Projects. Все права защищены.</p>
+  </footer>
+
+  <script>
+    const btn = document.getElementById('themeBtn');
+    const html = document.documentElement;
+    html.setAttribute('data-theme', localStorage.getItem('s010-theme') || 'light');
+
+    btn.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('s010-theme', next);
+    });
+
+    // Subtle 3D tilt on cards
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = ((e.clientX - r.left) / r.width - .5) * 7;
+        const y = ((e.clientY - r.top) / r.height - .5) * 7;
+        card.style.transform = `translateY(-5px) rotateX(${-y}deg) rotateY(${x}deg)`;
+      });
+      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+    });
+  </script>
+</body>
+</html>

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>S010 PROJECTS</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -11,50 +11,52 @@
       --bg: #f5f5f7;
       --bg-card: #ffffff;
       --bg-nav: rgba(245,245,247,0.85);
-      --text-primary: #1d1d1f;
-      --text-secondary: #6e6e73;
-      --text-tertiary: #aeaeb2;
+      --text: #1d1d1f;
+      --sub: #6e6e73;
+      --muted: #aeaeb2;
       --accent: #0071e3;
       --accent-hover: #0064cc;
-      --border: rgba(0,0,0,0.08);
-      --shadow-sm: 0 2px 14px rgba(0,0,0,0.06);
-      --shadow-md: 0 10px 40px rgba(0,0,0,0.10);
+      --border: rgba(0,0,0,0.07);
+      --row-hover: rgba(0,0,0,0.03);
+      --toggle: #e5e5ea;
+      --modal-bg: rgba(255,255,255,0.72);
+      --shadow: 0 24px 80px rgba(0,0,0,0.14);
       --badge-bg: rgba(0,113,227,0.09);
-      --badge-text: #0071e3;
-      --toggle-bg: #e5e5ea;
+      --badge: #0071e3;
+      --sep: rgba(0,0,0,0.06);
     }
-
     [data-theme="dark"] {
-      --bg: #000000;
+      --bg: #000;
       --bg-card: #1c1c1e;
       --bg-nav: rgba(0,0,0,0.85);
-      --text-primary: #f5f5f7;
-      --text-secondary: #98989d;
-      --text-tertiary: #48484a;
+      --text: #f5f5f7;
+      --sub: #98989d;
+      --muted: #48484a;
       --accent: #2997ff;
       --accent-hover: #409cff;
       --border: rgba(255,255,255,0.08);
-      --shadow-sm: 0 2px 14px rgba(0,0,0,0.5);
-      --shadow-md: 0 10px 40px rgba(0,0,0,0.6);
+      --row-hover: rgba(255,255,255,0.04);
+      --toggle: #38383a;
+      --modal-bg: rgba(28,28,30,0.78);
+      --shadow: 0 24px 80px rgba(0,0,0,0.7);
       --badge-bg: rgba(41,151,255,0.14);
-      --badge-text: #2997ff;
-      --toggle-bg: #38383a;
+      --badge: #2997ff;
+      --sep: rgba(255,255,255,0.06);
     }
 
     html { scroll-behavior: smooth; }
-
     body {
       background: var(--bg);
-      color: var(--text-primary);
+      color: var(--text);
       font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
-      transition: background .35s ease, color .35s ease;
+      transition: background .35s, color .35s;
     }
 
-    /* ─── NAV ─── */
+    /* ── NAV ── */
     nav {
-      position: sticky; top: 0; z-index: 100;
+      position: sticky; top: 0; z-index: 50;
       background: var(--bg-nav);
       backdrop-filter: saturate(180%) blur(24px);
       -webkit-backdrop-filter: saturate(180%) blur(24px);
@@ -62,208 +64,265 @@
       transition: background .35s, border-color .35s;
     }
     .nav-inner {
-      max-width: 960px; margin: 0 auto;
+      max-width: 680px; margin: 0 auto;
       padding: 0 24px; height: 52px;
       display: flex; align-items: center; justify-content: space-between;
     }
-    .logo {
-      font-size: 1rem; font-weight: 700;
-      letter-spacing: 0.5px;
-      color: var(--text-primary);
-      text-decoration: none;
-    }
-    .logo span { color: var(--accent); }
+    .logo { font-size: 1rem; font-weight: 700; letter-spacing: .4px; color: var(--text); text-decoration: none; }
+    .logo em { font-style: normal; color: var(--accent); }
 
-    /* Toggle */
-    .theme-toggle {
-      width: 42px; height: 24px;
-      background: var(--toggle-bg);
-      border-radius: 50px; border: none;
-      cursor: pointer; position: relative;
-      transition: background .3s;
+    .toggle-btn {
+      width: 42px; height: 24px; border-radius: 50px;
+      background: var(--toggle); border: none; cursor: pointer;
+      position: relative; transition: background .3s;
     }
-    .theme-toggle::after {
-      content: '';
-      position: absolute; top: 3px; left: 3px;
-      width: 18px; height: 18px;
-      background: #fff;
-      border-radius: 50%;
-      box-shadow: 0 1px 4px rgba(0,0,0,.25);
+    .toggle-btn::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25);
       transition: transform .3s cubic-bezier(.4,0,.2,1);
     }
-    [data-theme="dark"] .theme-toggle::after { transform: translateX(18px); }
+    [data-theme="dark"] .toggle-btn::after { transform: translateX(18px); }
 
-    /* ─── HERO ─── */
+    /* ── HERO ── */
     .hero {
-      max-width: 960px; margin: 0 auto;
-      padding: 80px 24px 50px;
-      text-align: center;
+      max-width: 680px; margin: 0 auto;
+      padding: 64px 24px 32px;
     }
-    .badge {
-      display: inline-flex; align-items: center; gap: 7px;
-      padding: 5px 14px; border-radius: 50px;
-      background: var(--badge-bg); color: var(--badge-text);
-      font-size: .75rem; font-weight: 600; letter-spacing: .3px;
-      margin-bottom: 24px;
-      animation: fadeUp .5s ease both;
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: .72rem; font-weight: 600; letter-spacing: .3px;
+      color: var(--badge); background: var(--badge-bg);
+      padding: 4px 12px; border-radius: 50px; margin-bottom: 16px;
     }
-    .badge-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 0 3px var(--badge-bg);
-    }
+    .hero-tag::before { content:''; width:5px; height:5px; background:var(--accent); border-radius:50%; }
     .hero h1 {
-      font-size: clamp(2.4rem, 5.5vw, 3.8rem);
-      font-weight: 700; letter-spacing: -1.2px; line-height: 1.08;
-      color: var(--text-primary);
-      margin-bottom: 18px;
-      animation: fadeUp .5s .06s ease both;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700; letter-spacing: -1px; line-height: 1.1;
+      margin-bottom: 10px;
     }
-    .hero h1 em { font-style: normal; color: var(--accent); }
-    .hero p {
-      font-size: 1.1rem; font-weight: 300;
-      color: var(--text-secondary); line-height: 1.7;
-      max-width: 480px; margin: 0 auto 52px;
-      animation: fadeUp .5s .12s ease both;
-    }
+    .hero p { font-size: .95rem; color: var(--sub); font-weight: 300; line-height: 1.65; }
 
-    /* ─── SECTION ─── */
-    .section {
-      max-width: 960px; margin: 0 auto;
-      padding: 0 24px 90px;
+    /* ── LIST ── */
+    .list-wrap {
+      max-width: 680px; margin: 36px auto 80px;
+      padding: 0 24px;
     }
-    .section-label {
-      font-size: .68rem; font-weight: 600;
-      color: var(--text-tertiary); letter-spacing: 1.4px;
-      text-transform: uppercase; margin-bottom: 18px;
+    .list-label {
+      font-size: .68rem; font-weight: 600; color: var(--muted);
+      letter-spacing: 1.3px; text-transform: uppercase; margin-bottom: 10px;
     }
-
-    /* ─── GRID ─── */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 14px;
-    }
-
-    /* ─── APP CARD ─── */
-    .card {
+    .app-list {
       background: var(--bg-card);
-      border-radius: 20px;
-      padding: 26px;
+      border-radius: 18px;
       border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-      display: flex; flex-direction: column; gap: 18px;
-      transition: transform .25s cubic-bezier(.4,0,.2,1), box-shadow .25s, background .35s, border-color .35s;
-      will-change: transform;
-    }
-    .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
-
-    .card-header { display: flex; align-items: center; gap: 14px; }
-
-    .app-icon {
-      width: 58px; height: 58px; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.7rem; flex-shrink: 0;
-      box-shadow: 0 3px 12px rgba(0,0,0,.10);
-    }
-    .icon-a { background: linear-gradient(145deg,#e3ecff,#c0d4ff); }
-    .icon-b { background: linear-gradient(145deg,#f0e3ff,#d4c0ff); }
-    .icon-c { background: linear-gradient(145deg,#e3fff0,#c0ffd4); }
-    [data-theme="dark"] .icon-a { background: linear-gradient(145deg,#162040,#1e3060); }
-    [data-theme="dark"] .icon-b { background: linear-gradient(145deg,#20163a,#301e60); }
-    [data-theme="dark"] .icon-c { background: linear-gradient(145deg,#162030,#1e4035); }
-
-    .app-info { flex: 1; min-width: 0; }
-    .app-name { font-size: 1rem; font-weight: 600; letter-spacing: -.2px; color: var(--text-primary); margin-bottom: 2px; }
-    .app-cat  { font-size: .75rem; color: var(--text-tertiary); }
-    .app-ver  {
-      display: inline-block; margin-top: 5px;
-      font-size: .65rem; font-weight: 600;
-      padding: 2px 8px; border-radius: 50px;
-      background: var(--badge-bg); color: var(--badge-text);
-    }
-
-    .app-desc {
-      font-size: .85rem; color: var(--text-secondary);
-      line-height: 1.65; font-weight: 300;
-    }
-
-    .stats {
-      display: flex; gap: 0;
-      border-top: 1px solid var(--border);
-      padding-top: 16px;
-    }
-    .stat { flex: 1; text-align: center; }
-    .stat + .stat { border-left: 1px solid var(--border); }
-    .stat-val { font-size: .9rem; font-weight: 600; color: var(--text-primary); }
-    .stat-key { font-size: .65rem; color: var(--text-tertiary); margin-top: 2px; }
-
-    /* ─── BUTTONS ─── */
-    .actions { display: flex; flex-direction: column; gap: 8px; }
-    .row { display: flex; gap: 8px; }
-    .row .btn { flex: 1; }
-
-    .btn {
-      display: flex; align-items: center; justify-content: center; gap: 7px;
-      padding: 12px 18px; border-radius: 11px;
-      font-size: .85rem; font-weight: 500;
-      text-decoration: none; border: none; cursor: pointer;
-      transition: all .18s ease;
-      position: relative; overflow: hidden;
-    }
-    .btn:active { transform: scale(.97); }
-
-    .btn-primary {
-      background: var(--accent); color: #fff;
-      box-shadow: 0 3px 14px rgba(0,113,227,.28);
-    }
-    .btn-primary:hover { background: var(--accent-hover); box-shadow: 0 4px 18px rgba(0,113,227,.38); }
-
-    .btn-ghost {
-      background: var(--badge-bg); color: var(--accent);
-    }
-    .btn-ghost:hover { opacity: .8; }
-
-    /* ─── INSTALL TIP ─── */
-    .tip-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px 24px;
-      display: flex; align-items: flex-start; gap: 14px;
-      box-shadow: var(--shadow-sm);
-      margin-top: 14px;
+      overflow: hidden;
       transition: background .35s, border-color .35s;
     }
-    .tip-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
-    .tip-text { font-size: .82rem; color: var(--text-secondary); line-height: 1.65; }
-    .tip-text strong { color: var(--text-primary); font-weight: 600; }
+    .app-row {
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px 18px;
+      cursor: pointer;
+      transition: background .18s;
+      position: relative;
+    }
+    .app-row:not(:last-child)::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 18px; right: 0;
+      height: 1px; background: var(--sep);
+    }
+    .app-row:hover { background: var(--row-hover); }
+    .app-row:active { background: var(--row-hover); }
 
-    /* ─── FOOTER ─── */
+    .row-icon {
+      width: 52px; height: 52px; border-radius: 13px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,.10);
+    }
+    .ic-a { background: linear-gradient(145deg,#e3ecff,#bdd0ff); }
+    .ic-b { background: linear-gradient(145deg,#f0e3ff,#d4c0ff); }
+    .ic-c { background: linear-gradient(145deg,#e3fff0,#bdffd4); }
+    [data-theme="dark"] .ic-a { background: linear-gradient(145deg,#162040,#1e3060); }
+    [data-theme="dark"] .ic-b { background: linear-gradient(145deg,#20163a,#301e60); }
+    [data-theme="dark"] .ic-c { background: linear-gradient(145deg,#162030,#1e4035); }
+
+    .row-info { flex: 1; min-width: 0; }
+    .row-name { font-size: .97rem; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+    .row-sub  { font-size: .78rem; color: var(--sub); }
+
+    .row-arrow {
+      font-size: .85rem; color: var(--muted);
+      transition: transform .18s;
+    }
+    .app-row:hover .row-arrow { transform: translateX(3px); }
+
+    /* ── MODAL OVERLAY ── */
+    .overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0); /* animates */
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      display: flex; align-items: flex-end; justify-content: center;
+      pointer-events: none; transition: background .3s, backdrop-filter .3s;
+    }
+    .overlay.open {
+      background: rgba(0,0,0,.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      pointer-events: all;
+    }
+
+    /* ── MODAL SHEET ── */
+    .sheet {
+      width: 100%; max-width: 680px;
+      max-height: 92vh;
+      background: var(--modal-bg);
+      backdrop-filter: saturate(180%) blur(40px);
+      -webkit-backdrop-filter: saturate(180%) blur(40px);
+      border-radius: 24px 24px 0 0;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow-y: auto;
+      transform: translateY(100%);
+      transition: transform .38s cubic-bezier(.4,0,.2,1), background .35s;
+    }
+    .overlay.open .sheet { transform: translateY(0); }
+
+    .sheet-handle {
+      width: 36px; height: 4px; border-radius: 4px;
+      background: var(--muted); opacity: .5;
+      margin: 14px auto 0;
+    }
+
+    .sheet-header {
+      display: flex; align-items: center; gap: 16px;
+      padding: 20px 24px 0;
+    }
+    .sheet-icon {
+      width: 72px; height: 72px; border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; flex-shrink: 0;
+      box-shadow: 0 4px 16px rgba(0,0,0,.14);
+    }
+    .sheet-meta { flex: 1; }
+    .sheet-name { font-size: 1.25rem; font-weight: 700; letter-spacing: -.3px; margin-bottom: 3px; }
+    .sheet-cat  { font-size: .82rem; color: var(--sub); }
+    .sheet-ver  {
+      display: inline-block; margin-top: 6px;
+      font-size: .67rem; font-weight: 600;
+      padding: 2px 9px; border-radius: 50px;
+      background: var(--badge-bg); color: var(--badge);
+    }
+
+    .sheet-body { padding: 20px 24px; }
+
+    /* ── SCREENSHOTS ── */
+    .screenshots {
+      display: flex; gap: 10px; overflow-x: auto;
+      scrollbar-width: none; margin-bottom: 24px;
+      padding-bottom: 4px;
+    }
+    .screenshots::-webkit-scrollbar { display: none; }
+    .screenshot {
+      flex-shrink: 0;
+      width: 120px; height: 210px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: var(--sep);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: .72rem;
+    }
+    .screenshot img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    /* placeholder pattern */
+    .screenshot.ph {
+      background: linear-gradient(135deg, var(--row-hover) 0%, var(--sep) 100%);
+      flex-direction: column; gap: 6px;
+    }
+    .ph-icon { font-size: 1.4rem; opacity: .35; }
+    .ph-label { font-size: .65rem; color: var(--muted); opacity: .7; }
+
+    /* ── DESCRIPTION ── */
+    .sheet-desc {
+      font-size: .88rem; color: var(--sub); line-height: 1.7; font-weight: 300;
+      margin-bottom: 24px;
+    }
+
+    /* ── SPECS ── */
+    .specs-title {
+      font-size: .72rem; font-weight: 600; color: var(--muted);
+      letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 10px;
+    }
+    .specs {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: var(--sep);
+      border-radius: 14px; overflow: hidden;
+      border: 1px solid var(--border);
+      margin-bottom: 28px;
+    }
+    .spec {
+      background: var(--bg-card);
+      padding: 12px 16px;
+      transition: background .35s;
+    }
+    .spec-k { font-size: .7rem; color: var(--muted); margin-bottom: 3px; }
+    .spec-v { font-size: .9rem; font-weight: 600; color: var(--text); }
+
+    /* ── INSTALL BTN ── */
+    .btn-install {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 15px;
+      border-radius: 14px; border: none; cursor: pointer;
+      font-size: 1rem; font-weight: 600;
+      background: var(--accent); color: #fff;
+      box-shadow: 0 4px 18px rgba(0,113,227,.3);
+      text-decoration: none;
+      transition: background .18s, transform .15s, box-shadow .18s;
+      margin-bottom: 12px;
+    }
+    .btn-install:hover { background: var(--accent-hover); box-shadow: 0 6px 22px rgba(0,113,227,.4); }
+    .btn-install:active { transform: scale(.98); }
+
+    .install-note {
+      text-align: center; font-size: .72rem; color: var(--muted);
+      padding-bottom: 8px;
+    }
+
+    /* ── CLOSE BTN ── */
+    .close-area { padding: 0 24px 28px; }
+    .btn-close {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; padding: 13px;
+      border-radius: 14px; border: none; cursor: pointer;
+      font-size: .9rem; font-weight: 500;
+      background: var(--row-hover); color: var(--sub);
+      transition: background .18s;
+    }
+    .btn-close:hover { background: var(--sep); }
+
+    /* ── FOOTER ── */
     footer {
       border-top: 1px solid var(--border);
-      padding: 36px 24px;
+      padding: 32px 24px;
       text-align: center;
       transition: border-color .35s;
     }
-    footer p { font-size: .76rem; color: var(--text-tertiary); line-height: 1.9; }
-    footer strong { color: var(--text-secondary); font-weight: 500; }
+    footer p { font-size: .74rem; color: var(--muted); line-height: 1.9; }
 
-    /* ─── ANIMATIONS ─── */
+    /* ── ANIMS ── */
     @keyframes fadeUp {
-      from { opacity:0; transform:translateY(20px); }
+      from { opacity:0; transform:translateY(16px); }
       to   { opacity:1; transform:translateY(0); }
     }
-    .card:nth-child(1) { animation: fadeUp .5s .18s ease both; }
-    .card:nth-child(2) { animation: fadeUp .5s .26s ease both; }
-    .card:nth-child(3) { animation: fadeUp .5s .34s ease both; }
+    .hero      { animation: fadeUp .45s ease both; }
+    .list-wrap { animation: fadeUp .45s .08s ease both; }
 
-    /* ─── RESPONSIVE ─── */
-    @media (max-width:600px) {
-      .hero { padding-top: 50px; }
-      .hero h1 { font-size: 2rem; }
-      .grid { grid-template-columns: 1fr; }
-      .row { flex-direction: column; }
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 1.8rem; }
+      .sheet-icon { width: 60px; height: 60px; font-size: 1.6rem; }
     }
   </style>
 </head>
@@ -271,123 +330,196 @@
 
   <nav>
     <div class="nav-inner">
-      <a class="logo" href="#"><span>S010</span>&nbsp;PROJECTS</a>
-      <button class="theme-toggle" id="themeBtn" aria-label="Тема"></button>
+      <a class="logo" href="https://instagram.com/jusupbekoov"><em>S010</em>&nbsp;PROJECTS</a>
+      <button class="toggle-btn" id="themeBtn" aria-label="Сменить тему"></button>
     </div>
   </nav>
 
-  <section class="hero">
-    <div class="badge"><span class="badge-dot"></span>Добро пожаловать</div>
-    <h1>Приложения<br>от <em>S010</em></h1>
-    <p>Главный источник наших приложений. Все приложения предназначены исключительно для ОС Android. Скачивайте напрямую — всегда и только актуальная версия.</p>
-  </section>
+  <div class="hero">
+    <div class="hero-tag">Добро пожаловать в официальный сайт</div>
+    <h1>Приложения от <span style="color: #0064cc;">S010</span></h1>
+    <p>Выберите приложение из списка, чтобы узнать подробнее и установить его.</p>
+  </div>
 
-  <section class="section">
-    <div class="section-label">Доступные приложения</div>
-    <div class="grid">
-
-      <!-- CARD 1 -->
-      <div class="card">
-        <div class="card-header">
-          <div class="app-icon icon-a">⚡</div>
-          <div class="app-info">
-            <div class="app-name">Student GO</div>
-            <div class="app-cat">Образование</div>
-            <span class="app-ver">v2.1.0</span>
-          </div>
-        </div>
-        <p class="app-desc">Student GO — ваш личный помощник в учёбе. Просматривайте расписание быстро и удобно. Всё, что нужно — теперь в одном приложении!</p>
-        <div class="stats">
-          <div class="stat"><div class="stat-val">1.0 ★</div><div class="stat-key">Рейтинг</div></div>
-          <div class="stat"><div class="stat-val">5.9 МБ</div><div class="stat-key">Размер</div></div>
-          <div class="stat"><div class="stat-val">7.0+</div><div class="stat-key">Android</div></div>
-        </div>
-        <div class="actions">
-          <a href="#" class="btn btn-primary">↓&nbsp;&nbsp;Установить</a>
-        </div>
-      </div>
-
-      <!-- CARD 2 -->
-      <div class="card">
-        <div class="card-header">
-          <div class="app-icon icon-b">🎯</div>
-          <div class="app-info">
-            <div class="app-name">Find & Bind</div>
-            <div class="app-cat">Игры</div>
-            <span class="app-ver">v1.1.0</span>
-          </div>
-        </div>
-        <p class="app-desc">F&B — захватывающий поиск слов для любителей головоломок. Найдите все слова, скрытые в сетке букв. Проверьте свою зоркость: слова прячутся во всех направлениях, включая диагонали. Сможете найти их все?</p>
-        <div class="stats">
-          <div class="stat"><div class="stat-val">1.0 ★</div><div class="stat-key">Рейтинг</div></div>
-          <div class="stat"><div class="stat-val">18 МБ</div><div class="stat-key">Размер</div></div>
-          <div class="stat"><div class="stat-val">7.0+</div><div class="stat-key">Android</div></div>
-        </div>
-        <div class="actions">
-          <div class="row">
-            <a href="#" class="btn btn-primary">↓&nbsp;&nbsp;Установить</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- CARD 3 -->
-      <div class="card">
-        <div class="card-header">
-          <div class="app-icon icon-c">🌿</div>
-          <div class="app-info">
-            <div class="app-name">TypeFall</div>
-            <div class="app-cat">Lifestyle</div>
-            <span class="app-ver">v1.4.0</span>
-          </div>
-        </div>
-        <p class="app-desc">Игра для проверки скорости вашей печати, суть игры: успеть написать слова пока они не упали вниз. Удачи.</p>
-        <div class="stats">
-          <div class="stat"><div class="stat-val">1.0 ★</div><div class="stat-key">Рейтинг</div></div>
-          <div class="stat"><div class="stat-val">4.7 МБ</div><div class="stat-key">Размер</div></div>
-          <div class="stat"><div class="stat-val">7.0+</div><div class="stat-key">Android</div></div>
-        </div>
-        <div class="actions">
-          <a href="#" class="btn btn-primary">↓&nbsp;&nbsp;Скачать APK</a>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- TIP -->
-    <div class="tip-box">
-      <span class="tip-icon">ℹ️</span>
-      <p class="tip-text">
-        <strong>Как правильно установить?</strong><br>
-        Перейдите в <strong>Настройки → Безопасность</strong> и разрешите установку из <strong>неизвестных источников</strong>, после этого откройте скачанный файл и следуйте дальнейшим инструкциям.
-      </p>
-    </div>
-  </section>
+  <div class="list-wrap">
+    <div class="list-label">Доступные приложения</div>
+    <div class="app-list" id="appList"></div>
+  </div>
 
   <footer>
-    <p><strong>S010 PROJECTS</strong></p>
-    <p>© Developed by S010 | 2026</p>
+    <p><strong style="color:var(--sub)">S010 PROJECTS</strong><br>
+    © Developed by S010</p>
   </footer>
 
-  <script>
-    const btn = document.getElementById('themeBtn');
-    const html = document.documentElement;
-    html.setAttribute('data-theme', localStorage.getItem('s010-theme') || 'light');
+  <!-- MODAL -->
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true">
+    <div class="sheet" id="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <div class="sheet-icon" id="sIcon"></div>
+        <div class="sheet-meta">
+          <div class="sheet-name" id="sName"></div>
+          <div class="sheet-cat"  id="sCat"></div>
+          <span class="sheet-ver" id="sVer"></span>
+        </div>
+      </div>
+      <div class="sheet-body">
+        <div class="screenshots" id="sScreens"></div>
+        <p class="sheet-desc" id="sDesc"></p>
+        <div class="specs-title">Данные</div>
+        <div class="specs" id="sSpecs"></div>
+        <a class="btn-install" id="sBtn" href="#">
+          &nbsp;&nbsp;Установить
+        </a>
+        <p class="install-note">Исключительно для ОС Android</p>
+      </div>
+      <div class="close-area">
+        <button class="btn-close" id="closeBtn">Закрыть</button>
+      </div>
+    </div>
+  </div>
 
-    btn.addEventListener('click', () => {
-      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      html.setAttribute('data-theme', next);
-      localStorage.setItem('s010-theme', next);
+  <script>
+    /* ── ДАННЫЕ ПРИЛОЖЕНИЙ ── */
+    const APPS = [
+      {
+        id: 'app1',
+        icon: '⚡',
+        iconClass: 'ic-a',
+        name: 'Student GO',
+        cat: 'Образование',
+        ver: 'v2.1.0',
+        desc: 'Student GO — ваш личный помощник в учёбе. Просматривайте расписание быстро и удобно. Всё, что нужно — теперь в одном приложении!',
+        screens: ['📊','📈','📋','⚙️'],
+        specs: [
+          { k: 'Версия',   v: '2.1.0' },
+          { k: 'Размер',   v: '1 МБ' },
+          { k: 'Android',  v: '7.0+' },
+          { k: 'Обновлён', v: 'Фев. 2026' },
+        ],
+        apk: '#'
+      },
+      {
+        id: 'app2',
+        icon: '🎯',
+        iconClass: 'ic-b',
+        name: 'Find & Bind',
+        cat: 'Игры',
+        ver: 'v1.1.0',
+        desc: 'F&B — захватывающий поиск слов для любителей головоломок. Найдите все слова, скрытые в сетке букв. Проверьте свою зоркость: слова прячутся во всех направлениях, включая диагонали. Сможете найти их все?',
+        screens: ['🗂','🔔','📂','🔍'],
+        specs: [
+          { k: 'Версия',   v: '1.1.0' },
+          { k: 'Размер',   v: '1 МБ' },
+          { k: 'Android',  v: '7.0+' },
+          { k: 'Обновлён', v: 'Фев. 2026' },
+        ],
+        apk: '#'
+      },
+      {
+        id: 'app3',
+        icon: '🌿',
+        iconClass: 'ic-c',
+        name: 'TypeFall',
+        cat: 'Игры',
+        ver: 'v1.0.0',
+        desc: 'Подробное описание третьего приложения. Расскажите здесь, что оно делает, какие задачи решает, чем отличается от аналогов. Можно написать несколько предложений о ключевых возможностях.',
+        screens: ['🌱','📅','💚','🏆'],
+        specs: [
+          { k: 'Версия',   v: '1.0.0' },
+          { k: 'Размер',   v: '1 МБ' },
+          { k: 'Android',  v: '7.0+' },
+          { k: 'Обновлён', v: 'Февю 2026' },
+        ],
+        apk: '#'
+      },
+    ];
+
+    /* ── RENDER LIST ── */
+    const list = document.getElementById('appList');
+    APPS.forEach(app => {
+      const row = document.createElement('div');
+      row.className = 'app-row';
+      row.innerHTML = `
+        <div class="row-icon ${app.iconClass}">${app.icon}</div>
+        <div class="row-info">
+          <div class="row-name">${app.name}</div>
+          <div class="row-sub">${app.cat} · ${app.ver}</div>
+        </div>
+        <div class="row-arrow">›</div>
+      `;
+      row.addEventListener('click', () => openApp(app));
+      list.appendChild(row);
     });
 
-    // Subtle 3D tilt on cards
-    document.querySelectorAll('.card').forEach(card => {
-      card.addEventListener('mousemove', e => {
-        const r = card.getBoundingClientRect();
-        const x = ((e.clientX - r.left) / r.width - .5) * 7;
-        const y = ((e.clientY - r.top) / r.height - .5) * 7;
-        card.style.transform = `translateY(-5px) rotateX(${-y}deg) rotateY(${x}deg)`;
+    /* ── MODAL ── */
+    const overlay  = document.getElementById('overlay');
+    const sIcon    = document.getElementById('sIcon');
+    const sName    = document.getElementById('sName');
+    const sCat     = document.getElementById('sCat');
+    const sVer     = document.getElementById('sVer');
+    const sScreens = document.getElementById('sScreens');
+    const sDesc    = document.getElementById('sDesc');
+    const sSpecs   = document.getElementById('sSpecs');
+    const sBtn     = document.getElementById('sBtn');
+    const closeBtn = document.getElementById('closeBtn');
+    const sheet    = document.getElementById('sheet');
+
+    function openApp(app) {
+      sIcon.className = `sheet-icon ${app.iconClass}`;
+      sIcon.textContent = app.icon;
+      sName.textContent = app.name;
+      sCat.textContent  = app.cat;
+      sVer.textContent  = app.ver;
+      sDesc.textContent = app.desc;
+      sBtn.href = app.apk;
+
+      // Screenshots
+      sScreens.innerHTML = '';
+      app.screens.forEach(s => {
+        const d = document.createElement('div');
+        d.className = 'screenshot ph';
+        d.innerHTML = `<span class="ph-icon">${s}</span><span class="ph-label">Скриншот</span>`;
+        sScreens.appendChild(d);
       });
-      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+
+      // Specs
+      sSpecs.innerHTML = '';
+      app.specs.forEach(sp => {
+        const d = document.createElement('div');
+        d.className = 'spec';
+        d.innerHTML = `<div class="spec-k">${sp.k}</div><div class="spec-v">${sp.v}</div>`;
+        sSpecs.appendChild(d);
+      });
+
+      sheet.scrollTop = 0;
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // swipe down to close
+    let startY = 0;
+    sheet.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, { passive: true });
+    sheet.addEventListener('touchend', e => {
+      if (e.changedTouches[0].clientY - startY > 80 && sheet.scrollTop === 0) closeModal();
+    }, { passive: true });
+
+    /* ── THEME ── */
+    const html = document.documentElement;
+    html.setAttribute('data-theme', localStorage.getItem('s010t') || 'light');
+    document.getElementById('themeBtn').addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('s010t', next);
     });
   </script>
 </body>

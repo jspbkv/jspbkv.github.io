@@ -8,40 +8,42 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #f5f5f7;
+      --bg: #f8f9fa;
       --bg-card: #ffffff;
-      --bg-nav: rgba(245,245,247,0.85);
-      --text: #1d1d1f;
-      --sub: #6e6e73;
-      --muted: #aeaeb2;
-      --accent: #0071e3;
-      --accent-hover: #0064cc;
-      --border: rgba(0,0,0,0.07);
-      --row-hover: rgba(0,0,0,0.03);
-      --toggle: #e5e5ea;
-      --modal-bg: rgba(255,255,255,0.72);
-      --shadow: 0 24px 80px rgba(0,0,0,0.14);
-      --badge-bg: rgba(0,113,227,0.09);
-      --badge: #0071e3;
-      --sep: rgba(0,0,0,0.06);
+      --bg-nav: rgba(248,249,250,0.9);
+      --text: #212529;
+      --sub: #6c757d;
+      --muted: #adb5bd;
+      --accent: #0d6efd;
+      --accent-hover: #0b5ed7;
+      --border: rgba(0,0,0,0.08);
+      --row-hover: rgba(13,110,253,0.06);
+      --toggle: #dee2e6;
+      --modal-bg: rgba(255,255,255,0.95);
+      --shadow: 0 10px 30px rgba(0,0,0,0.12);
+      --badge-bg: rgba(13,110,253,0.12);
+      --badge: #0d6efd;
+      --sep: rgba(0,0,0,0.08);
+      --card-hover: rgba(13,110,253,0.08);
     }
     [data-theme="dark"] {
-      --bg: #000;
-      --bg-card: #1c1c1e;
-      --bg-nav: rgba(0,0,0,0.85);
-      --text: #f5f5f7;
-      --sub: #98989d;
-      --muted: #48484a;
-      --accent: #2997ff;
-      --accent-hover: #409cff;
-      --border: rgba(255,255,255,0.08);
-      --row-hover: rgba(255,255,255,0.04);
-      --toggle: #38383a;
-      --modal-bg: rgba(28,28,30,0.78);
-      --shadow: 0 24px 80px rgba(0,0,0,0.7);
-      --badge-bg: rgba(41,151,255,0.14);
-      --badge: #2997ff;
-      --sep: rgba(255,255,255,0.06);
+      --bg: #121212;
+      --bg-card: #1e1e1e;
+      --bg-nav: rgba(30,30,30,0.95);
+      --text: #e9ecef;
+      --sub: #adb5bd;
+      --muted: #6c757d;
+      --accent: #4da3ff;
+      --accent-hover: #6bb0ff;
+      --border: rgba(255,255,255,0.1);
+      --row-hover: rgba(77,163,255,0.12);
+      --toggle: #495057;
+      --modal-bg: rgba(30,30,30,0.95);
+      --shadow: 0 10px 30px rgba(0,0,0,0.4);
+      --badge-bg: rgba(77,163,255,0.18);
+      --badge: #4da3ff;
+      --sep: rgba(255,255,255,0.1);
+      --card-hover: rgba(77,163,255,0.15);
     }
 
     html { scroll-behavior: smooth; }
@@ -135,17 +137,44 @@
     .app-row:active { background: var(--row-hover); }
 
     .row-icon {
-      width: 52px; height: 52px; border-radius: 13px;
+      width: 52px; height: 52px; border-radius: 14px;
       display: flex; align-items: center; justify-content: center;
       font-size: 1.5rem; flex-shrink: 0;
-      box-shadow: 0 2px 8px rgba(0,0,0,.10);
+      box-shadow: 0 4px 16px rgba(0,0,0,.08);
+      transition: all .25s ease;
+      border: 1px solid var(--border);
     }
-    .ic-a { background: linear-gradient(145deg,#e3ecff,#bdd0ff); }
-    .ic-b { background: linear-gradient(145deg,#f0e3ff,#d4c0ff); }
-    .ic-c { background: linear-gradient(145deg,#e3fff0,#bdffd4); }
-    [data-theme="dark"] .ic-a { background: linear-gradient(145deg,#162040,#1e3060); }
-    [data-theme="dark"] .ic-b { background: linear-gradient(145deg,#20163a,#301e60); }
-    [data-theme="dark"] .ic-c { background: linear-gradient(145deg,#162030,#1e4035); }
+    .ic-a { 
+      background: linear-gradient(135deg, #e8f0ff 0%, #d6e6ff 100%);
+      color: #1e40ff;
+    }
+    .ic-b { 
+      background: linear-gradient(135deg, #f0e6ff 0%, #e6d6ff 100%);
+      color: #6b1fff;
+    }
+    .ic-c { 
+      background: linear-gradient(135deg, #e6fff0 0%, #d6ffe6 100%);
+      color: #1fff6b;
+    }
+    [data-theme="dark"] .ic-a { 
+      background: linear-gradient(135deg, #1a2340 0%, #1e2a4a 100%);
+      color: #8aa3ff;
+      border-color: rgba(255,255,255,0.15);
+    }
+    [data-theme="dark"] .ic-b { 
+      background: linear-gradient(135deg, #2a1a40 0%, #3a205a 100%);
+      color: #cfa6ff;
+      border-color: rgba(255,255,255,0.15);
+    }
+    [data-theme="dark"] .ic-c { 
+      background: linear-gradient(135deg, #1a3a2a 0%, #204a35 100%);
+      color: #8fffab;
+      border-color: rgba(255,255,255,0.15);
+    }
+    .app-row:hover .row-icon {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,.15);
+    }
 
     .row-info { flex: 1; min-width: 0; }
     .row-name { font-size: .97rem; font-weight: 600; color: var(--text); margin-bottom: 2px; }
@@ -203,7 +232,36 @@
       width: 72px; height: 72px; border-radius: 18px;
       display: flex; align-items: center; justify-content: center;
       font-size: 2rem; flex-shrink: 0;
-      box-shadow: 0 4px 16px rgba(0,0,0,.14);
+      box-shadow: 0 8px 24px rgba(0,0,0,.12);
+      transition: all .25s ease;
+      border: 1px solid var(--border);
+    }
+    .sheet-icon.ic-a { 
+      background: linear-gradient(135deg, #e8f0ff 0%, #d6e6ff 100%);
+      color: #1e40ff;
+    }
+    .sheet-icon.ic-b { 
+      background: linear-gradient(135deg, #f0e6ff 0%, #e6d6ff 100%);
+      color: #6b1fff;
+    }
+    .sheet-icon.ic-c { 
+      background: linear-gradient(135deg, #e6fff0 0%, #d6ffe6 100%);
+      color: #1fff6b;
+    }
+    [data-theme="dark"] .sheet-icon.ic-a { 
+      background: linear-gradient(135deg, #1a2340 0%, #1e2a4a 100%);
+      color: #8aa3ff;
+      border-color: rgba(255,255,255,0.15);
+    }
+    [data-theme="dark"] .sheet-icon.ic-b { 
+      background: linear-gradient(135deg, #2a1a40 0%, #3a205a 100%);
+      color: #cfa6ff;
+      border-color: rgba(255,255,255,0.15);
+    }
+    [data-theme="dark"] .sheet-icon.ic-c { 
+      background: linear-gradient(135deg, #1a3a2a 0%, #204a35 100%);
+      color: #8fffab;
+      border-color: rgba(255,255,255,0.15);
     }
     .sheet-meta { flex: 1; }
     .sheet-name { font-size: 1.25rem; font-weight: 700; letter-spacing: -.3px; margin-bottom: 3px; }
@@ -320,9 +378,60 @@
     .hero      { animation: fadeUp .45s ease both; }
     .list-wrap { animation: fadeUp .45s .08s ease both; }
 
+    /* iOS-style animations */
+    .app-row {
+      transition: all .25s cubic-bezier(.4,0,.2,1);
+    }
+    .app-row:active {
+      transform: scale(.985);
+      background: var(--card-hover);
+    }
+
+    /* Enhanced button animations */
+    .btn-install {
+      transition: all .25s cubic-bezier(.4,0,.2,1);
+    }
+    .btn-install:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(13,110,253,.35);
+    }
+    .btn-install:active {
+      transform: translateY(1px) scale(.99);
+      box-shadow: 0 2px 8px rgba(13,110,253,.25);
+    }
+
+    .btn-close {
+      transition: all .25s cubic-bezier(.4,0,.2,1);
+    }
+    .btn-close:hover {
+      transform: translateY(-1px);
+      background: var(--sep);
+    }
+    .btn-close:active {
+      transform: translateY(1px) scale(.995);
+    }
+
+    /* Sheet entrance animation */
+    .sheet {
+      animation: sheetEnter .4s cubic-bezier(.4,0,.2,1);
+    }
+    @keyframes sheetEnter {
+      from { transform: translateY(20px); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+
     @media (max-width: 480px) {
       .hero h1 { font-size: 1.8rem; }
       .sheet-icon { width: 60px; height: 60px; font-size: 1.6rem; }
+      
+      /* Mobile-specific improvements */
+      .app-row {
+        padding: 16px 20px;
+      }
+      .row-icon {
+        width: 56px; height: 56px;
+        border-radius: 16px;
+      }
     }
   </style>
 </head>
@@ -390,7 +499,12 @@
         cat: 'Образование',
         ver: 'v2.1.0',
         desc: 'Student GO — ваш личный помощник в учёбе. Просматривайте расписание быстро и удобно. Всё, что нужно — теперь в одном приложении!',
-        screens: ['', '', '', ''],
+        screens: [
+          "assets/studentgo-1.jpg",
+          "assets/studentgo-2.jpg",
+          "assets/studentgo-3.jpg",
+          "assets/studentgo-4.jpg"
+        ],
         specs: [
           { k: 'Версия',   v: '2.1.0' },
           { k: 'Размер',   v: '1 МБ' },
@@ -407,7 +521,7 @@
         cat: 'Игры',
         ver: 'v1.1.0',
         desc: 'F&B — захватывающий поиск слов для любителей головоломок. Найдите все слова, скрытые в сетке букв. Проверьте свою зоркость: слова прячутся во всех направлениях, включая диагонали. Сможете найти их все?',
-        screens: ['🗂','🔔','📂','🔍'],
+        screens: ['/FindBind-main/src/assets/hero-bg.jpg','/FindBind-main/public/fb_splash.png','/FindBind-main/src/assets/empty-state.jpg','/FindBind-main/public/favicon.ico'],
         specs: [
           { k: 'Версия',   v: '1.1.0' },
           { k: 'Размер',   v: '1 МБ' },
@@ -478,8 +592,23 @@
       sScreens.innerHTML = '';
       app.screens.forEach(s => {
         const d = document.createElement('div');
-        d.className = 'screenshot ph';
-        d.innerHTML = `<span class="ph-icon">${s}</span><span class="ph-label">Скриншот</span>`;
+        d.className = 'screenshot';
+        if (s.startsWith('./') || s.startsWith('/') || (s.includes('.') && !s.startsWith('http'))) {
+          // It's an image path
+          const img = document.createElement('img');
+          img.src = s;
+          img.alt = "Screenshot";
+          img.onerror = function() {
+            // Fallback to placeholder if image fails to load
+            d.className = 'screenshot ph';
+            d.innerHTML = `<span class="ph-icon">📷</span><span class="ph-label">Image not found</span>`;
+          };
+          d.appendChild(img);
+        } else {
+          // It's an emoji/icon
+          d.className = 'screenshot ph';
+          d.innerHTML = `<span class="ph-icon">${s}</span><span class="ph-label"></span>`;
+        }
         sScreens.appendChild(d);
       });
 

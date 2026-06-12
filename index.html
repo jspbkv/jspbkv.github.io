@@ -1,665 +1,158 @@
 <!DOCTYPE html>
-<html lang="ru" data-theme="light">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>S010 PROJECTS</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #f8f9fa;
-      --bg-card: #ffffff;
-      --bg-nav: rgba(248,249,250,0.9);
-      --text: #212529;
-      --sub: #6c757d;
-      --muted: #adb5bd;
-      --accent: #0d6efd;
-      --accent-hover: #0b5ed7;
-      --border: rgba(0,0,0,0.08);
-      --row-hover: rgba(13,110,253,0.06);
-      --toggle: #dee2e6;
-      --modal-bg: rgba(255,255,255,0.95);
-      --shadow: 0 10px 30px rgba(0,0,0,0.12);
-      --badge-bg: rgba(13,110,253,0.12);
-      --badge: #0d6efd;
-      --sep: rgba(0,0,0,0.08);
-      --card-hover: rgba(13,110,253,0.08);
-    }
-    [data-theme="dark"] {
-      --bg: #121212;
-      --bg-card: #1e1e1e;
-      --bg-nav: rgba(30,30,30,0.95);
-      --text: #e9ecef;
-      --sub: #adb5bd;
-      --muted: #6c757d;
-      --accent: #4da3ff;
-      --accent-hover: #6bb0ff;
-      --border: rgba(255,255,255,0.1);
-      --row-hover: rgba(77,163,255,0.12);
-      --toggle: #495057;
-      --modal-bg: rgba(30,30,30,0.95);
-      --shadow: 0 10px 30px rgba(0,0,0,0.4);
-      --badge-bg: rgba(77,163,255,0.18);
-      --badge: #4da3ff;
-      --sep: rgba(255,255,255,0.1);
-      --card-hover: rgba(77,163,255,0.15);
-    }
-
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
-      -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
-      transition: background .35s, color .35s;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: sticky; top: 0; z-index: 50;
-      background: var(--bg-nav);
-      backdrop-filter: saturate(180%) blur(24px);
-      -webkit-backdrop-filter: saturate(180%) blur(24px);
-      border-bottom: 1px solid var(--border);
-      transition: background .35s, border-color .35s;
-    }
-    .nav-inner {
-      max-width: 680px; margin: 0 auto;
-      padding: 0 24px; height: 52px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .logo { font-size: 1rem; font-weight: 700; letter-spacing: .4px; color: var(--text); text-decoration: none; }
-    .logo em { font-style: normal; color: var(--accent); }
-
-    .toggle-btn {
-      width: 42px; height: 24px; border-radius: 50px;
-      background: var(--toggle); border: none; cursor: pointer;
-      position: relative; transition: background .3s;
-    }
-    .toggle-btn::after {
-      content: ''; position: absolute; top: 3px; left: 3px;
-      width: 18px; height: 18px; border-radius: 50%;
-      background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25);
-      transition: transform .3s cubic-bezier(.4,0,.2,1);
-    }
-    [data-theme="dark"] .toggle-btn::after { transform: translateX(18px); }
-
-    /* ── HERO ── */
-    .hero {
-      max-width: 680px; margin: 0 auto;
-      padding: 64px 24px 32px;
-    }
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: .72rem; font-weight: 600; letter-spacing: .3px;
-      color: var(--badge); background: var(--badge-bg);
-      padding: 4px 12px; border-radius: 50px; margin-bottom: 16px;
-    }
-    .hero-tag::before { content:''; width:5px; height:5px; background:var(--accent); border-radius:50%; }
-    .hero h1 {
-      font-size: clamp(2rem, 5vw, 2.8rem);
-      font-weight: 700; letter-spacing: -1px; line-height: 1.1;
-      margin-bottom: 10px;
-    }
-    .hero p { font-size: .95rem; color: var(--sub); font-weight: 300; line-height: 1.65; }
-
-    /* ── LIST ── */
-    .list-wrap {
-      max-width: 680px; margin: 36px auto 80px;
-      padding: 0 24px;
-    }
-    .list-label {
-      font-size: .68rem; font-weight: 600; color: var(--muted);
-      letter-spacing: 1.3px; text-transform: uppercase; margin-bottom: 10px;
-    }
-    .app-list {
-      background: var(--bg-card);
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      overflow: hidden;
-      transition: background .35s, border-color .35s;
-    }
-    .app-row {
-      display: flex; align-items: center; gap: 16px;
-      padding: 14px 18px;
-      cursor: pointer;
-      transition: background .18s;
-      position: relative;
-    }
-    .app-row:not(:last-child)::after {
-      content: ''; position: absolute;
-      bottom: 0; left: 18px; right: 0;
-      height: 1px; background: var(--sep);
-    }
-    .app-row:hover { background: var(--row-hover); }
-    .app-row:active { background: var(--row-hover); }
-
-    .row-icon {
-      width: 52px; height: 52px; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem; flex-shrink: 0;
-      box-shadow: 0 4px 16px rgba(0,0,0,.08);
-      transition: all .25s ease;
-      border: 1px solid var(--border);
-    }
-    .ic-a { 
-      background: linear-gradient(135deg, #e8f0ff 0%, #d6e6ff 100%);
-      color: #1e40ff;
-    }
-    .ic-b { 
-      background: linear-gradient(135deg, #f0e6ff 0%, #e6d6ff 100%);
-      color: #6b1fff;
-    }
-    .ic-c { 
-      background: linear-gradient(135deg, #e6fff0 0%, #d6ffe6 100%);
-      color: #1fff6b;
-    }
-    [data-theme="dark"] .ic-a { 
-      background: linear-gradient(135deg, #1a2340 0%, #1e2a4a 100%);
-      color: #8aa3ff;
-      border-color: rgba(255,255,255,0.15);
-    }
-    [data-theme="dark"] .ic-b { 
-      background: linear-gradient(135deg, #2a1a40 0%, #3a205a 100%);
-      color: #cfa6ff;
-      border-color: rgba(255,255,255,0.15);
-    }
-    [data-theme="dark"] .ic-c { 
-      background: linear-gradient(135deg, #1a3a2a 0%, #204a35 100%);
-      color: #8fffab;
-      border-color: rgba(255,255,255,0.15);
-    }
-    .app-row:hover .row-icon {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,0,0,.15);
-    }
-
-    .row-info { flex: 1; min-width: 0; }
-    .row-name { font-size: .97rem; font-weight: 600; color: var(--text); margin-bottom: 2px; }
-    .row-sub  { font-size: .78rem; color: var(--sub); }
-
-    .row-arrow {
-      font-size: .85rem; color: var(--muted);
-      transition: transform .18s;
-    }
-    .app-row:hover .row-arrow { transform: translateX(3px); }
-
-    /* ── MODAL OVERLAY ── */
-    .overlay {
-      position: fixed; inset: 0; z-index: 200;
-      background: rgba(0,0,0,0); /* animates */
-      backdrop-filter: blur(0px);
-      -webkit-backdrop-filter: blur(0px);
-      display: flex; align-items: flex-end; justify-content: center;
-      pointer-events: none; transition: background .3s, backdrop-filter .3s;
-    }
-    .overlay.open {
-      background: rgba(0,0,0,.45);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      pointer-events: all;
-    }
-
-    /* ── MODAL SHEET ── */
-    .sheet {
-      width: 100%; max-width: 680px;
-      max-height: 92vh;
-      background: var(--modal-bg);
-      backdrop-filter: saturate(180%) blur(40px);
-      -webkit-backdrop-filter: saturate(180%) blur(40px);
-      border-radius: 24px 24px 0 0;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      overflow-y: auto;
-      transform: translateY(100%);
-      transition: transform .38s cubic-bezier(.4,0,.2,1), background .35s;
-    }
-    .overlay.open .sheet { transform: translateY(0); }
-
-    .sheet-handle {
-      width: 36px; height: 4px; border-radius: 4px;
-      background: var(--muted); opacity: .5;
-      margin: 14px auto 0;
-    }
-
-    .sheet-header {
-      display: flex; align-items: center; gap: 16px;
-      padding: 20px 24px 0;
-    }
-    .sheet-icon {
-      width: 72px; height: 72px; border-radius: 18px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2rem; flex-shrink: 0;
-      box-shadow: 0 8px 24px rgba(0,0,0,.12);
-      transition: all .25s ease;
-      border: 1px solid var(--border);
-    }
-    .sheet-icon.ic-a { 
-      background: linear-gradient(135deg, #e8f0ff 0%, #d6e6ff 100%);
-      color: #1e40ff;
-    }
-    .sheet-icon.ic-b { 
-      background: linear-gradient(135deg, #f0e6ff 0%, #e6d6ff 100%);
-      color: #6b1fff;
-    }
-    .sheet-icon.ic-c { 
-      background: linear-gradient(135deg, #e6fff0 0%, #d6ffe6 100%);
-      color: #1fff6b;
-    }
-    [data-theme="dark"] .sheet-icon.ic-a { 
-      background: linear-gradient(135deg, #1a2340 0%, #1e2a4a 100%);
-      color: #8aa3ff;
-      border-color: rgba(255,255,255,0.15);
-    }
-    [data-theme="dark"] .sheet-icon.ic-b { 
-      background: linear-gradient(135deg, #2a1a40 0%, #3a205a 100%);
-      color: #cfa6ff;
-      border-color: rgba(255,255,255,0.15);
-    }
-    [data-theme="dark"] .sheet-icon.ic-c { 
-      background: linear-gradient(135deg, #1a3a2a 0%, #204a35 100%);
-      color: #8fffab;
-      border-color: rgba(255,255,255,0.15);
-    }
-    .sheet-meta { flex: 1; }
-    .sheet-name { font-size: 1.25rem; font-weight: 700; letter-spacing: -.3px; margin-bottom: 3px; }
-    .sheet-cat  { font-size: .82rem; color: var(--sub); }
-    .sheet-ver  {
-      display: inline-block; margin-top: 6px;
-      font-size: .67rem; font-weight: 600;
-      padding: 2px 9px; border-radius: 50px;
-      background: var(--badge-bg); color: var(--badge);
-    }
-
-    .sheet-body { padding: 20px 24px; }
-
-    /* ── SCREENSHOTS ── */
-    .screenshots {
-      display: flex; gap: 10px; overflow-x: auto;
-      scrollbar-width: none; margin-bottom: 24px;
-      padding-bottom: 4px;
-    }
-    .screenshots::-webkit-scrollbar { display: none; }
-    .screenshot {
-      flex-shrink: 0;
-      width: 120px; height: 210px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      overflow: hidden;
-      background: var(--sep);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--muted); font-size: .72rem;
-    }
-    .screenshot img {
-      width: 100%; height: 100%; object-fit: cover;
-    }
-    /* placeholder pattern */
-    .screenshot.ph {
-      background: linear-gradient(135deg, var(--row-hover) 0%, var(--sep) 100%);
-      flex-direction: column; gap: 6px;
-    }
-    .ph-icon { font-size: 1.4rem; opacity: .35; }
-    .ph-label { font-size: .65rem; color: var(--muted); opacity: .7; }
-
-    /* ── DESCRIPTION ── */
-    .sheet-desc {
-      font-size: .88rem; color: var(--sub); line-height: 1.7; font-weight: 300;
-      margin-bottom: 24px;
-    }
-
-    /* ── SPECS ── */
-    .specs-title {
-      font-size: .72rem; font-weight: 600; color: var(--muted);
-      letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 10px;
-    }
-    .specs {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 1px; background: var(--sep);
-      border-radius: 14px; overflow: hidden;
-      border: 1px solid var(--border);
-      margin-bottom: 28px;
-    }
-    .spec {
-      background: var(--bg-card);
-      padding: 12px 16px;
-      transition: background .35s;
-    }
-    .spec-k { font-size: .7rem; color: var(--muted); margin-bottom: 3px; }
-    .spec-v { font-size: .9rem; font-weight: 600; color: var(--text); }
-
-    /* ── INSTALL BTN ── */
-    .btn-install {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      width: 100%; padding: 15px;
-      border-radius: 14px; border: none; cursor: pointer;
-      font-size: 1rem; font-weight: 600;
-      background: var(--accent); color: #fff;
-      box-shadow: 0 4px 18px rgba(0,113,227,.3);
-      text-decoration: none;
-      transition: background .18s, transform .15s, box-shadow .18s;
-      margin-bottom: 12px;
-    }
-    .btn-install:hover { background: var(--accent-hover); box-shadow: 0 6px 22px rgba(0,113,227,.4); }
-    .btn-install:active { transform: scale(.98); }
-
-    .install-note {
-      text-align: center; font-size: .72rem; color: var(--muted);
-      padding-bottom: 8px;
-    }
-
-    /* ── CLOSE BTN ── */
-    .close-area { padding: 0 24px 28px; }
-    .btn-close {
-      display: flex; align-items: center; justify-content: center;
-      width: 100%; padding: 13px;
-      border-radius: 14px; border: none; cursor: pointer;
-      font-size: .9rem; font-weight: 500;
-      background: var(--row-hover); color: var(--sub);
-      transition: background .18s;
-    }
-    .btn-close:hover { background: var(--sep); }
-
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 32px 24px;
-      text-align: center;
-      transition: border-color .35s;
-    }
-    footer p { font-size: .74rem; color: var(--muted); line-height: 1.9; }
-
-    /* ── ANIMS ── */
-    @keyframes fadeUp {
-      from { opacity:0; transform:translateY(16px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-    .hero      { animation: fadeUp .45s ease both; }
-    .list-wrap { animation: fadeUp .45s .08s ease both; }
-
-    /* iOS-style animations */
-    .app-row {
-      transition: all .25s cubic-bezier(.4,0,.2,1);
-    }
-    .app-row:active {
-      transform: scale(.985);
-      background: var(--card-hover);
-    }
-
-    /* Enhanced button animations */
-    .btn-install {
-      transition: all .25s cubic-bezier(.4,0,.2,1);
-    }
-    .btn-install:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 24px rgba(13,110,253,.35);
-    }
-    .btn-install:active {
-      transform: translateY(1px) scale(.99);
-      box-shadow: 0 2px 8px rgba(13,110,253,.25);
-    }
-
-    .btn-close {
-      transition: all .25s cubic-bezier(.4,0,.2,1);
-    }
-    .btn-close:hover {
-      transform: translateY(-1px);
-      background: var(--sep);
-    }
-    .btn-close:active {
-      transform: translateY(1px) scale(.995);
-    }
-
-    /* Sheet entrance animation */
-    .sheet {
-      animation: sheetEnter .4s cubic-bezier(.4,0,.2,1);
-    }
-    @keyframes sheetEnter {
-      from { transform: translateY(20px); opacity: 0; }
-      to   { transform: translateY(0); opacity: 1; }
-    }
-
-    @media (max-width: 480px) {
-      .hero h1 { font-size: 1.8rem; }
-      .sheet-icon { width: 60px; height: 60px; font-size: 1.6rem; }
-      
-      /* Mobile-specific improvements */
-      .app-row {
-        padding: 16px 20px;
-      }
-      .row-icon {
-        width: 56px; height: 56px;
-        border-radius: 16px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<title>Выпускной 2008 & 2010</title>
 </head>
 <body>
+<div class="page">
 
-  <nav>
-    <div class="nav-inner">
-      <a class="logo" href="https://instagram.com/jusupbekoov"><em>S010</em>&nbsp;PROJECTS</a>
-      <button class="toggle-btn" id="themeBtn" aria-label="Сменить тему"></button>
+  <header class="site-header">
+    <h1>Выпускной 2008 &amp; 2010</h1>
+    <p class="meta">Суббота, 13 июня &nbsp;·&nbsp; Касса, расходы и остатки</p>
+  </header>
+
+  <!-- ════════════════ ВЫПУСКНОЙ 2008 ════════════════ -->
+  <div class="year-heading">
+    <h2>Выпускной 2008</h2>
+    <span class="date-tag">Сб, 13 Июнь</span>
+  </div>
+
+  <!-- Участники -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Участники — АКЧА</h2>
+      <span class="badge badge-green">21 человек</span>
     </div>
-  </nav>
-
-  <div class="hero">
-    <div class="hero-tag">Добро пожаловать в официальный сайт</div>
-    <h1>Приложения от <span style="color: #0064cc;">S010</span></h1>
-    <p>Выберите приложение из списка, чтобы узнать подробнее и установить его.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:40px">№</th>
+            <th>Имя</th>
+            <th class="r">Наличка</th>
+            <th class="r">Mbank</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num-cell">1</td><td>Алым</td><td class="r muted">—</td><td class="r muted">—</td></tr>
+          <tr><td class="num-cell">2</td><td>Алламберген</td><td class="r">10 000 сом</td><td class="r muted">—</td></tr>
+          <tr><td class="num-cell">3</td><td>Акылбек</td><td class="r">5 000 сом</td><td class="r">3 000 сом</td></tr>
+          <tr><td class="num-cell">4</td><td>Даниел</td><td class="r">10 000 сом</td><td class="r muted">—</td></tr>
+          <tr><td class="num-cell">5</td><td>Амангелди</td><td class="r">7 000 сом</td><td class="r muted">—</td></tr>
+          <tr><td class="num-cell">6</td><td>Амантур</td><td class="r">5 000 сом</td><td class="r muted">—</td></tr>
+          <tr><td class="num-cell">7</td><td>Элхан</td><td class="r">10 000 сом</td><td class="r muted">—</td></tr>
+          <tr><td class="num-cell">8</td><td>Бектемир</td><td class="r">5 000 сом</td><td class="r muted">—</td></tr>
+          <tr><td class="num-cell">9</td><td>Тологон</td><td class="r">10 000 сом</td><td class="r muted">—</td></tr>
+          <tr><td class="num-cell">10</td><td>Дияз</td><td class="r">5 000 сом</td><td class="r muted">—</td></tr>
+          <tr><td class="num-cell">11</td><td>Тимурлан</td><td class="r muted">—</td><td class="r">3 500 сом</td></tr>
+          <tr><td class="num-cell">12</td><td>Нурсултан</td><td class="r">8 500 сом</td><td class="r">1 500 сом</td></tr>
+          <tr><td class="num-cell">13</td><td>Алихан</td><td class="r">10 000 сом</td><td class="r muted">—</td></tr>
+          <tr><td class="num-cell">14</td><td>Бекболсун</td><td class="r muted">—</td><td class="r muted">—</td></tr>
+          <tr><td class="num-cell">15</td><td>Байэл</td><td class="r muted">—</td><td class="r muted">—</td></tr>
+          <tr><td class="num-cell">16</td><td>Билал</td><td class="r muted">—</td><td class="r muted">—</td></tr>
+          <tr><td class="num-cell">17</td><td>Элнур</td><td class="r muted">—</td><td class="r muted">—</td></tr>
+          <tr><td class="num-cell">18</td><td>Ырыскелди</td><td class="r muted">—</td><td class="r muted">—</td></tr>
+          <tr><td class="num-cell">19</td><td>Арген</td><td class="r muted">—</td><td class="r muted">—</td></tr>
+          <tr><td class="num-cell">20</td><td>Марлен</td><td class="r muted">—</td><td class="r muted">—</td></tr>
+          <tr><td class="num-cell">21</td><td>Урмат</td><td class="r muted">—</td><td class="r muted">—</td></tr>
+          <tr class="total-row">
+            <td></td>
+            <td>Итого</td>
+            <td class="r">85 500 сом</td>
+            <td class="r">8 000 сом</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <div class="list-wrap">
-    <div class="list-label">Доступные приложения</div>
-    <div class="app-list" id="appList"></div>
+  <!-- Расходы 2008 -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Расходы</h2>
+      <span class="badge badge-amber">42 500 сом</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Статья</th>
+            <th class="r">Сумма</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Кортедж (заклад)</td><td class="r">10 000 сом</td></tr>
+          <tr><td>Ресторан (заклад)</td><td class="r">30 000 сом</td></tr>
+          <tr><td>Тамада (ресторан)</td><td class="r">2 000 сом</td></tr>
+          <tr><td>Жол кире</td><td class="r">500 сом</td></tr>
+          <tr class="total-row">
+            <td>Жалпы расход</td>
+            <td class="r">42 500 сом</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <footer>
-    <p><strong style="color:var(--sub)">S010 PROJECTS</strong><br>
-    © Developed by S010</p>
-  </footer>
-
-  <!-- MODAL -->
-  <div class="overlay" id="overlay" role="dialog" aria-modal="true">
-    <div class="sheet" id="sheet">
-      <div class="sheet-handle"></div>
-      <div class="sheet-header">
-        <div class="sheet-icon" id="sIcon"></div>
-        <div class="sheet-meta">
-          <div class="sheet-name" id="sName"></div>
-          <div class="sheet-cat"  id="sCat"></div>
-          <span class="sheet-ver" id="sVer"></span>
-        </div>
+  <!-- Итог 2008 -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Итог 2008</h2>
+    </div>
+    <div class="totals-grid">
+      <div class="total-item">
+        <div class="lbl">Жалпы сумма</div>
+        <div class="val">85 500 сом</div>
       </div>
-      <div class="sheet-body">
-        <div class="screenshots" id="sScreens"></div>
-        <p class="sheet-desc" id="sDesc"></p>
-        <div class="specs-title">Данные</div>
-        <div class="specs" id="sSpecs"></div>
-        <a class="btn-install" id="sBtn" href="#">
-          &nbsp;&nbsp;Установить
-        </a>
-        <p class="install-note">Исключительно для ОС Android</p>
+      <div class="total-item">
+        <div class="lbl">Жалпы расход</div>
+        <div class="val">42 500 сом</div>
       </div>
-      <div class="close-area">
-        <button class="btn-close" id="closeBtn">Закрыть</button>
+      <div class="total-item">
+        <div class="lbl">Жыйынтык</div>
+        <div class="val green">43 000 сом</div>
       </div>
     </div>
   </div>
 
-  <script>
-    /* ── ДАННЫЕ ПРИЛОЖЕНИЙ ── */
-    const APPS = [
-      {
-        id: 'app1',
-        icon: '',
-        iconClass: 'ic-a',
-        name: 'Student GO',
-        cat: 'Образование | ОшТУ',
-        ver: 'v2.1.0',
-        desc: 'Student GO — ваш личный помощник в учёбе. Просматривайте расписание быстро и удобно. Всё, что нужно — теперь в одном приложении!',
-        screens: [
-          "assets/App_1/studentgo-1.jpg",
-          "assets/App_1/studentgo-2.jpg",
-          "assets/App_1/studentgo-3.jpg",
-          "assets/App_1/studentgo-4.jpg"
-        ],
-        specs: [
-          { k: 'Версия',   v: '2.1.0' },
-          { k: 'Размер',   v: '5.8 МБ' },
-          { k: 'Android',  v: '7.0+' },
-          { k: 'Обновлён', v: '03.03.26' },
-        ],
-        apk: 'https://github.com/jspbkv/jspbkv.github.io/releases/download/v2.1.0/StudentGO.apk'
-      },
-      {
-        id: 'app2',
-        icon: '',
-        iconClass: 'ic-b',
-        name: 'Find & Bind',
-        cat: 'Игры',
-        ver: 'v1.1.0',
-        desc: 'F&B — захватывающий поиск слов для любителей головоломок. Найдите все слова, скрытые в сетке букв. Проверьте свою зоркость: слова прячутся во всех направлениях, включая диагонали. Сможете найти их все?',
-        screens: [
-          "assets/App_2/fb1.png",
-          "assets/App_2/fb2.png",
-          "assets/App_2/fb3.png",
-          "assets/App_2/fb4.png"
-        ],
-        specs: [
-          { k: 'Версия',   v: '1.1.0' },
-          { k: 'Размер',   v: '27 МБ' },
-          { k: 'Android',  v: '7.0+' },
-          { k: 'Обновлён', v: '02.03.26' },
-        ],
-        apk: 'https://github.com/jspbkv/jspbkv.github.io/releases/download/v1.1.0/Find.Bind.apk'
-      },
-      {
-        id: 'app3',
-        icon: '',
-        iconClass: 'ic-c',
-        name: 'TypeFall',
-        cat: 'Игры',
-        ver: 'v1.0.0',
-        desc: 'Простая но интересная игра для тренировки навыков печати. Слова падают сверху, и ваша задача — напечатать их как можно быстрее, чтобы не дать им достичь низа экрана. Идеально подходит для всех уровней, от новичков до опытных печатников. Улучшайте свою скорость и точность с каждым раундом!',
-        screens: [
-          "assets/App_3/tp1.png",
-          "assets/App_3/tp2.png",
-          "assets/App_3/tp3.png",
-          "assets/App_3/tp4.png"
-        ],
-        specs: [
-          { k: 'Версия',   v: '1.0.0' },
-          { k: 'Размер',   v: '4.7 МБ' },
-          { k: 'Android',  v: '7.0+' },
-          { k: 'Обновлён', v: '03.03.26' },
-        ],
-        apk: 'https://github.com/jspbkv/jspbkv.github.io/releases/download/v1.0.0/TypeFall.apk'
-      },
-    ];
+  <!-- ════════════════ ВЫПУСКНОЙ 2010 ════════════════ -->
+  <div class="year-heading">
+    <h2>Выпускной 2010</h2>
+    <span class="date-tag">Сб, 13 Июнь</span>
+  </div>
 
-    /* ── RENDER LIST ── */
-    const list = document.getElementById('appList');
-    APPS.forEach(app => {
-      const row = document.createElement('div');
-      row.className = 'app-row';
-      row.innerHTML = `
-        <div class="row-icon ${app.iconClass}">${app.icon}</div>
-        <div class="row-info">
-          <div class="row-name">${app.name}</div>
-          <div class="row-sub">${app.cat} · ${app.ver}</div>
-        </div>
-        <div class="row-arrow">›</div>
-      `;
-      row.addEventListener('click', () => openApp(app));
-      list.appendChild(row);
-    });
+  <div class="section">
+    <div class="section-head">
+      <h2>Итог 2010</h2>
+      <span class="badge badge-blue">Отдельная группа</span>
+    </div>
+    <div class="totals-grid">
+      <div class="total-item">
+        <div class="lbl">Наличка</div>
+        <div class="val">13 000 сом</div>
+      </div>
+      <div class="total-item">
+        <div class="lbl">Mbank</div>
+        <div class="val">11 000 сом</div>
+      </div>
+      <div class="total-item">
+        <div class="lbl">Жыйынтык</div>
+        <div class="val green">24 000 сом</div>
+      </div>
+    </div>
+  </div>
 
-    /* ── MODAL ── */
-    const overlay  = document.getElementById('overlay');
-    const sIcon    = document.getElementById('sIcon');
-    const sName    = document.getElementById('sName');
-    const sCat     = document.getElementById('sCat');
-    const sVer     = document.getElementById('sVer');
-    const sScreens = document.getElementById('sScreens');
-    const sDesc    = document.getElementById('sDesc');
-    const sSpecs   = document.getElementById('sSpecs');
-    const sBtn     = document.getElementById('sBtn');
-    const closeBtn = document.getElementById('closeBtn');
-    const sheet    = document.getElementById('sheet');
+  <!-- Grand total -->
+  <div class="grand-total">
+    <div>
+      <div class="gt-label">Общий остаток — 2008 + 2010</div>
+    </div>
+    <div class="gt-value">67 000 сом</div>
+  </div>
 
-    function openApp(app) {
-      sIcon.className = `sheet-icon ${app.iconClass}`;
-      sIcon.textContent = app.icon;
-      sName.textContent = app.name;
-      sCat.textContent  = app.cat;
-      sVer.textContent  = app.ver;
-      sDesc.textContent = app.desc;
-      sBtn.href = app.apk;
-
-      // Screenshots
-      sScreens.innerHTML = '';
-      app.screens.forEach(s => {
-        const d = document.createElement('div');
-        d.className = 'screenshot';
-        if (s.startsWith('./') || s.startsWith('/') || (s.includes('.') && !s.startsWith('http'))) {
-          // It's an image path
-          const img = document.createElement('img');
-          img.src = s;
-          img.alt = "Screenshot";
-          img.onerror = function() {
-            // Fallback to placeholder if image fails to load
-            d.className = 'screenshot ph';
-            d.innerHTML = `<span class="ph-icon">📷</span><span class="ph-label">Image not found</span>`;
-          };
-          d.appendChild(img);
-        } else {
-          // It's an emoji/icon
-          d.className = 'screenshot ph';
-          d.innerHTML = `<span class="ph-icon">${s}</span><span class="ph-label"></span>`;
-        }
-        sScreens.appendChild(d);
-      });
-
-      // Specs
-      sSpecs.innerHTML = '';
-      app.specs.forEach(sp => {
-        const d = document.createElement('div');
-        d.className = 'spec';
-        d.innerHTML = `<div class="spec-k">${sp.k}</div><div class="spec-v">${sp.v}</div>`;
-        sSpecs.appendChild(d);
-      });
-
-      sheet.scrollTop = 0;
-      overlay.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-      overlay.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    closeBtn.addEventListener('click', closeModal);
-    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-    // swipe down to close
-    let startY = 0;
-    sheet.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, { passive: true });
-    sheet.addEventListener('touchend', e => {
-      if (e.changedTouches[0].clientY - startY > 80 && sheet.scrollTop === 0) closeModal();
-    }, { passive: true });
-
-    /* ── THEME ── */
-    const html = document.documentElement;
-    html.setAttribute('data-theme', localStorage.getItem('s010t') || 'light');
-    document.getElementById('themeBtn').addEventListener('click', () => {
-      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      html.setAttribute('data-theme', next);
-      localStorage.setItem('s010t', next);
-    });
-  </script>
+</div>
 </body>
 </html>
